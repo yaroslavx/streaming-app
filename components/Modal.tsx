@@ -1,4 +1,5 @@
-import { ThumbUpIcon } from "@heroicons/react/outline"
+import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline"
+import { ThumbUpIcon as Thumb } from "@heroicons/react/solid"
 import { CheckIcon, PlusIcon, VolumeOffIcon, VolumeUpIcon, XIcon } from "@heroicons/react/solid"
 import MuiModal from "@mui/material/Modal"
 import { collection, deleteDoc, doc, DocumentData, onSnapshot, setDoc } from "firebase/firestore"
@@ -24,6 +25,7 @@ function Modal() {
     const [muted, setMuted] = useState(false)
     const { user } = useAuth()
     const [addedToList, setAddedToList] = useState(false)
+    const [like, setLike] = useState(false)
 
     const handleList = async () => {
         if (addedToList) {
@@ -126,8 +128,8 @@ function Modal() {
                                 {addedToList ? (<CheckIcon className='h-7 w-7' />) : (<PlusIcon className='h-7 w-7' />)}
                             </button>
 
-                            <button className="modalButton">
-                                <ThumbUpIcon className='h-7 w-7' />
+                            <button className="modalButton" onClick={() => setLike(!like)}>
+                            {like ? (<ThumbDownIcon className='h-7 w-7' />) : (<ThumbUpIcon className='h-7 w-7' />)}
                             </button>
                         </div>
                         <button className="modalButton" onClick={() => setMuted(!muted)}>

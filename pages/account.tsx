@@ -4,9 +4,11 @@ import Link from 'next/link'
 import { FaRegSmileBeam, FaSmileBeam, FaSmileWink } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import useSubscription from '../hooks/useSubscription'
+import { useRouter } from 'next/router'
+import { getAuth } from 'firebase/auth'
 
 function Account() {
-
+  const router = useRouter()
   const { user, logout } = useAuth()
   const plan = useSubscription(user);
 
@@ -26,22 +28,10 @@ function Account() {
           />
         </Link>
         <Link href="/account">
-          <FaRegSmileBeam className='h-6 w-6 absolute right-4 top-4 cursor-pointer object-contain transition-all lg:top-7 lg:right-11' />
+          <div className='h-fit w-fit absolute right-4 top-4 transition-all lg:top-7 lg:right-11'>{getAuth().currentUser?.email}</div>
         </Link>
       </header>
-      {/* <main className='pt-24'>
-        <div>
-          <h1 className="text-3xl md:text-4xl">Account</h1>
-        </div>
-        <div>
-          <h4>Plan Details</h4>
-          <div>{plan}</div>
-        </div>
-        <button onClick={logout}>Sign Out</button>
-      </main> */}
-
-
-      <main className="mx-auto max-w-6xl px-5 pt-24 pb-12 transition-all md:px-10">
+      <main className="mx-auto max-w-6xl px-5 pt-24 pb-12 transition-all md:px-10 ">
         <div className="flex flex-col gap-x-4 md:flex-row md:items-center">
           <h1 className="text-3xl md:text-4xl">Account</h1>
           <div className="-ml-0.5 flex items-center gap-x-1.5">
@@ -51,20 +41,17 @@ function Account() {
 
 
 
-        <div className="mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0 md:pb-0">
+        <div className="mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0 md:pb-0  items-center">
           <h4 className="text-lg text-[gray]">Plan Details</h4>
-          {/* Find the current plan */}
           <div className="col-span-2 font-medium">
             {plan}
           </div>
-          <p
-            className="cursor-pointer text-blue-500 hover:underline md:text-right"
-          >
+          <p className="cursor-pointer text-blue-500 hover:underline md:text-right md:mr-3" onClick={() => router.push("/plans")}>
             Change plan
           </p>
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0">
+        <div className="mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0  items-center">
           <h4 className="text-lg text-[gray]">Settings</h4>
           <p
             className="col-span-3 cursor-pointer text-blue-500 hover:underline"

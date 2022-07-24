@@ -16,14 +16,14 @@ export default function DropMenu() {
   }
 
   return (
-    <div className="md:!hidden">
+    <div className="md:hidden ">
       <Button
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        className="!capitalize !text-white"
+        className="headerLink p-0 mb-1 ml-7 font-light !capitalize !text-[#e5e5e5]"
       >
         Browse
       </Button>
