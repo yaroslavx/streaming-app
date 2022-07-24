@@ -9,6 +9,7 @@ import { doc, getDoc, query, QueryDocumentSnapshot } from "firebase/firestore";
 import { colRef, db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore"; 
 import useSubscription from "../hooks/useSubscription";
+import Plans from "../components/Plans";
 
 interface Inputs {
   email: string
@@ -64,7 +65,7 @@ function Login() {
             )}
             </label>
           </div> 
-          <button className="w-full rounded bg-[#da1f3b] py-3 font-semibold" onClick={() => {setLogin(true); }}>Sign in</button>
+          <button className="w-full rounded bg-[#da1f3b] py-3 font-semibold" onClick={() => {setLogin(true);}}>Sign in</button>
 
 
           <div className="text-[gray]">

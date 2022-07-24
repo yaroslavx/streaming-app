@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
       setUser(userCredential.user)
-      router.push('/')
+      router.push('/plans')
       setLoading(false)
     }).catch(e => alert(e.message)).finally(() => setLoading(false))
   }
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signIn = async (email: string, password: string) => {
     setLoading(true)
     
-    
+
     await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
       setUser(userCredential.user)
       router.push('/')

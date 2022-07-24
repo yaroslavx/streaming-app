@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import useAuth from '../hooks/useAuth'
-import Table from './Table'
+import Table from '../components/Table'
 import { getAuth } from "firebase/auth";
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../firebase'
@@ -17,6 +17,7 @@ interface Props {
 
 function Plans({ subscriptionCallback }: Props) {
     const router = useRouter()
+
     const listOfPlans = ["Basic", "Standart", "Premium"]
     const [selectedPlan, setSelectedPlan] = useState("Premium")
 
@@ -71,7 +72,7 @@ function Plans({ subscriptionCallback }: Props) {
                     <Link href="/">
                         <button
                             className={`mx-auto w-11/12 rounded bg-[#da1f3b] py-4 text-xl shadow hover:bg-[#da1f3b]/90 md:w-[420px]`}
-                            onClick={() => { subscriptionCallback(); setDoc(doc(db, 'users', `${getAuth().currentUser?.uid}`), { selectedPlan, "subscription": true, "email": `${getAuth().currentUser?.email}`}); router.push('/')}}
+                            onClick={() => {setDoc(doc(db, 'users', `${getAuth().currentUser?.uid}`), { selectedPlan, "subscription": true, "email": `${getAuth().currentUser?.email}`});  router.push('/')}}
                         >
                             Subscribe
                         </button>
