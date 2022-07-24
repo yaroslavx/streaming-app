@@ -1,9 +1,14 @@
+import { getAuth } from "firebase/auth";
 import Head from "next/head"
 import Image from "next/image"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import loginbg from '../assets/loginbg.jpg'
 import useAuth from "../hooks/useAuth";
+import { doc, getDoc, query, QueryDocumentSnapshot } from "firebase/firestore";
+import { colRef, db } from "../firebase";
+import { collection, getDocs } from "firebase/firestore"; 
+import useSubscription from "../hooks/useSubscription";
 
 interface Inputs {
   email: string
@@ -13,7 +18,8 @@ interface Inputs {
 function Login() {
   const { register, handleSubmit , formState: { errors } } = useForm<Inputs>();
   const [login, setLogin] = useState(false)
-  const {signIn, signUp} = useAuth()
+  const {signIn, signUp, user} = useAuth()
+
 
   const onSubmit: SubmitHandler<Inputs> = async ({email, password}) => {
     login ? await signIn(email, password) : await signUp(email, password)
@@ -57,12 +63,13 @@ function Login() {
               </p>
             )}
             </label>
-          </div>
-          <button className="w-full rounded bg-[#da1f3b] py-3 font-semibold" onClick={() => setLogin(true)}>Sign in</button>
+          </div> 
+          <button className="w-full rounded bg-[#da1f3b] py-3 font-semibold" onClick={() => {setLogin(true); }}>Sign in</button>
+
 
           <div className="text-[gray]">
             New to Stream?{' '}
-            <button type="submit" className="text-white hover:underline" onClick={() => setLogin(false)}>Sign up now</button>
+            <button type="submit" className="text-white hover:underline" onClick={() => {setLogin(false);}}>Sign up now</button>
           </div>
         </form>
     </div>

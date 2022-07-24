@@ -1,4 +1,5 @@
 import { BellIcon, IdentificationIcon, SearchIcon } from '@heroicons/react/solid'
+import DropMenu  from './Menu'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth'
@@ -28,9 +29,10 @@ function Header() {
           height={100}
           className="cursor-pointer object-contain"
         />
-
+        <DropMenu/>
         <ul className='hidden space-x-4 md:flex'>
           <li className='headerLink'>Home</li>
+          <li className='headerLink'>{}</li>
           <li className='headerLink'>TV shows</li>
           <li className='headerLink'>Movies</li>
           <li className='headerLink'>New & Popular</li>
@@ -46,6 +48,7 @@ function Header() {
         </Link>
       </div>
     </header>
+    
   )
 }
 

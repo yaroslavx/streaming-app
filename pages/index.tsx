@@ -1,15 +1,22 @@
+import { getAuth } from 'firebase/auth'
+import { collection, doc, DocumentData, getDoc, getDocs, getFirestore } from 'firebase/firestore'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { modalState } from '../atoms/modalAtom'
+import { useEffect, useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { modalState, movieState } from '../atoms/modalAtom'
 import Banner from '../components/Banner'
 import Header from '../components/Header'
 import Modal from '../components/Modal'
+import Plans from '../components/Plans'
 import Row from '../components/Row'
+import { colRef, db } from '../firebase'
 import useAuth from '../hooks/useAuth'
+import useList from '../hooks/useList'
+import useSubscription from '../hooks/useSubscription'
 import { Movie } from '../typings'
 import requests from '../utils/request'
+
 
 interface Props {
   netflixOriginals: Movie[]
@@ -22,6 +29,8 @@ interface Props {
   documentaries: Movie[]
 }
 
+
+
 const Home = ({
   netflixOriginals,
   actionMovies,
@@ -32,11 +41,25 @@ const Home = ({
   topRated,
   trendingNow,
 }: Props) => {
-  const {loading} = useAuth()
+  const { user, loading } = useAuth()
   const [showModal, setShowModal] = useRecoilState(modalState)
+  // const plan = useSubscription(user);
+  const [subscription, setSubscription] = useState(false)
+  const [plan, setPlan] = useState(false)
+  const movie = useRecoilValue(movieState)
+  const list = useList(user?.uid)
 
+  const subscriptionCallback = () => {
+    setSubscription(true)
+  }
 
-  if (loading) return null
+  const planCallback = () => {
+    setPlan(true)
+  }
+
+  if (loading || subscription === null) return null
+
+  if (!subscription && !plan) return <Plans subscriptionCallback={subscriptionCallback}/>
 
   return (
     <div className={`relative h-screen bg-gradient-to-b lg:h-[140vh] ${showModal && "!h-screen overflow-hidden"}`}>
@@ -53,6 +76,7 @@ const Home = ({
           <Row title="Top Rated" movies={topRated} />
           <Row title="Action Thrillers" movies={actionMovies} />
           {/* My List Component*/}
+          {list.length > 0 && <Row title="My List" movies={list} />}
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />
           <Row title="Romance Movies" movies={romanceMovies} />
@@ -67,6 +91,7 @@ const Home = ({
 export default Home
 
 export const getServerSideProps = async () => {
+
   const [
     netflixOriginals,
     trendingNow,
